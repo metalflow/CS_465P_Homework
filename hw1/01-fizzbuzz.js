@@ -26,3 +26,20 @@ Input: n = 15
 Output: ["1","2","Fizz","4","Buzz","Fizz","7","8","Fizz","Buzz","11","Fizz","13","14","FizzBuzz"]
 
 **/
+
+function FizzBuzz(input) {
+  let output = [];
+  if (input % 3 && input % 5) {
+    output.push("FizzBuzz");
+  }
+  if (input % 3) {
+    output.push("Fizz");
+  }
+  if (input % 5) {
+    output.push("Buzz");
+  }
+  if (!(input % 3) && !(input % 5)) {
+    output.push(input.toString());
+  }
+  return output;
+}
