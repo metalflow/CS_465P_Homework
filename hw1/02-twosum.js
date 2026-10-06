@@ -22,3 +22,18 @@ Input: nums = [3,3], target = 6
 Output: [0,1]
 
 **/
+
+function (input,target) {
+    let output = [];
+    input.forEach(element => {
+        if (Number.isNaN(element)) {
+            throw new TypeError('input provided must be numeric:'+element+' is not a number');
+            return;
+        } 
+        let pairIndex = input.indexOf((target-element));
+        if (pairIndex != -1) {
+            output.push([input.indexOf(element),pairIndex])
+        }
+    })
+    return output;
+}
