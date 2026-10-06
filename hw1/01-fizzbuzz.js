@@ -52,3 +52,7 @@ function FizzBuzz(input) {
   }
   return output;
 }
+
+console.log(FizzBuzz(3));
+console.log(FizzBuzz(5));
+console.log(FizzBuzz(15));

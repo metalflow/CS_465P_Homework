@@ -25,17 +25,22 @@ Output: [0,1]
 
 function twosum(input, target) {
   let output = [];
-  input.forEach((element) => {
-    if (Number.isNaN(element)) {
+  for (i = 0; i < input.length(); i++) {
+    let current = input.shift();
+    if (Number.isNaN(current)) {
       throw new TypeError(
-        "input provided must be numeric:" + element + " is not a number",
+        "input provided must be numeric:" + current + " is not a number",
       );
-      return;
+      continue;
     }
-    let pairIndex = input.indexOf(target - element);
-    if (pairIndex != -1) {
-      output.push([input.indexOf(element), pairIndex]);
+    let pair = target - current;
+    if (input.includes(pair)) {
+      return [i, input.indexOf(pair)];
     }
-  });
-  return output;
+  }
+  return [];
 }
+
+console.log(twosum([2, 7, 11, 15], 9));
+console.log(twosum([3, 2, 4], 6));
+console.log(twosum([3, 3], 6));
