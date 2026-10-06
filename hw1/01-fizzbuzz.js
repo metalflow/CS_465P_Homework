@@ -37,13 +37,13 @@ function FizzBuzz(input) {
   let output = [];
   for (i = 1; i <= input; i++) {
     switch (i) {
-      case i % 5 && i % 3:
+      case i % 5 === 0 && i % 3 === 0:
         output.push("FizzBuzz");
         break;
-      case i % 3:
+      case i % 3 === 0:
         output.push("Fizz");
         break;
-      case i % 5:
+      case i % 5 === 0:
         output.push("Buzz");
         break;
       default:
