@@ -28,18 +28,27 @@ Output: ["1","2","Fizz","4","Buzz","Fizz","7","8","Fizz","Buzz","11","Fizz","13"
 **/
 
 function FizzBuzz(input) {
+  if (Number.isNaN(input)) {
+    throw new TypeError(
+      "input provided must be numeric:" + element + " is not a number",
+    );
+    return;
+  }
   let output = [];
-  if (input % 3 && input % 5) {
-    output.push("FizzBuzz");
-  }
-  if (input % 3) {
-    output.push("Fizz");
-  }
-  if (input % 5) {
-    output.push("Buzz");
-  }
-  if (!(input % 3) && !(input % 5)) {
-    output.push(input.toString());
+  for (i = 1; i <= input; i++) {
+    switch (i) {
+      case i % 5 && i % 3:
+        output.push("FizzBuzz");
+        break;
+      case i % 3:
+        output.push("Fizz");
+        break;
+      case i % 5:
+        output.push("Buzz");
+        break;
+      default:
+        output.push(i.toString());
+    }
   }
   return output;
 }
