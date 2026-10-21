@@ -25,7 +25,7 @@ Output: [0,1]
 
 function twosum(input, target) {
   let output = [];
-  for (i = 0; i < input.length(); i++) {
+  for (i = 0; i < input.length; i++) {
     let current = input.shift();
     if (Number.isNaN(current)) {
       throw new TypeError(
@@ -35,7 +35,7 @@ function twosum(input, target) {
     }
     let pair = target - current;
     if (input.includes(pair)) {
-      return [i, input.indexOf(pair)];
+      return [i, input.indexOf(pair) + i + 1];
     }
   }
   return [];

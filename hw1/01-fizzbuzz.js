@@ -30,13 +30,14 @@ Output: ["1","2","Fizz","4","Buzz","Fizz","7","8","Fizz","Buzz","11","Fizz","13"
 function FizzBuzz(input) {
   if (Number.isNaN(input)) {
     throw new TypeError(
-      "input provided must be numeric:" + element + " is not a number",
+      "input provided must be numeric:" + input + " is not a number",
     );
     return;
   }
   let output = [];
+  let i = 0;
   for (i = 1; i <= input; i++) {
-    switch (i) {
+    switch (true) {
       case i % 5 === 0 && i % 3 === 0:
         output.push("FizzBuzz");
         break;
