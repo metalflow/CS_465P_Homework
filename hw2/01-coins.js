@@ -4,7 +4,6 @@
 function calculateChange(input) {
   //variable declaration
   let output = "";
-  let change = 0;
 
   //input cleaning
   let cleanInput = Number(
@@ -23,6 +22,10 @@ function calculateChange(input) {
     return "Error: input too large";
   }
 
+  if (cleanInput === 0) {
+    return "No change needed.";
+  }
+
   //compute number of dollars
   const dollars = Math.trunc(cleanInput);
   cleanInput = cleanInput - dollars;
@@ -32,15 +35,15 @@ function calculateChange(input) {
   cleanInput = cleanInput * 100;
   //compute number of quarters
   const quarters = (cleanInput / 25) | 0; // bitwise OR forces integer math and removes odd division behavior
-  cleanInput = cleanInput - quarters * 25;
+  cleanInput = (cleanInput - quarters * 25) | 0;
   //console.log(quarters + " quarters");
   //compute number of dimes
   const dimes = (cleanInput / 10) | 0; // bitwise OR forces integer math and removes odd division behavior
-  cleanInput = cleanInput - dimes * 10;
+  cleanInput = (cleanInput - dimes * 10) | 0;
   //console.log(dimes + " dimes");
   //compute number of nickels
   const nickels = (cleanInput / 5) | 0; // bitwise OR forces integer math and removes odd division behavior
-  cleanInput = cleanInput - nickels * 5;
+  cleanInput = (cleanInput - nickels * 5) | 0;
   //console.log(nickels + " nickels");
   //console.log(cleanInput + " remaining");
   //assign pennies
@@ -121,4 +124,5 @@ console.log(calculateChange("100.000"));
 console.log(calculateChange(100.1));
 console.log(calculateChange(100.12));
 console.log(calculateChange(100.123));
+console.log(calculateChange(19.99));
 console.log(calculateChange("1,000"));

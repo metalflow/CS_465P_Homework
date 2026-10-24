@@ -29,7 +29,7 @@ app.get("/", (req, res) => {
 
 app.get("/welcome", (req, res) => {
   res.status(200);
-  res.set({ "Content-Type": "text/plain" });
+  res.set({ "Content-Type": "text/html" });
   res.send("Welcome to the Express Jungle!");
 });
 
@@ -45,7 +45,7 @@ app.get("/redirected", (req, res) => {
 });
 
 app.get("/cache", (req, res) => {
-  res.set("Cache-Control", "public, max-age=1d");
+  res.set("Cache-Control", "public, max-age=86400");
   res.set({ "Content-Type": "text/html" });
   res.send("this resource was cached");
 });
@@ -57,7 +57,7 @@ app.get("/cookie", (req, res) => {
 });
 
 app.use((req, res, next) => {
-  res.status(404).send("404 Route not found!");
+  res.status(404).send("404 - page not found");
 });
 
 app.listen(port, () => {

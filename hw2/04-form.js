@@ -8,19 +8,34 @@ const port = process.env.PORT || 5001;
 
 app.use(express.urlencoded({ extended: true }));
 
+function escapeHTML(str) {
+  if (!str) return "";
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 app.get("/form", (req, res) => {
   res.status(200);
   res.set({ "Content-Type": "text/html" });
   res.send(`
         <h2>A Simple Form</h2>
         <form action="/submit" method="POST">
-            <label><input type="radio" name="test" value="true"> Test?</label><br>
 
-            <label for="name">Name:</label><br>
-            <input type="text" id="name" name="name" required><br><br>
-            
-            <label for="message">Message:</label><br>
-            <textarea id="message" name="message" required></textarea><br><br>
+            <label for="username">Username:</label><br>
+            <input type="text" id="username" name="username" required><br><br>
+
+            <label for="email">Email:</label><br>
+            <input type="email" id="email" name="email" required><br><br>
+
+            <label for="comments">Comments:</label><br>
+            <input type="text" id="comments" name="comments"><br><br>
+
+            <label for="signUp">Sign up for Newsletter?</label><br>
+            <input type="checkbox" id="signUp" name="signUp"><br><br>
             
             <button type="submit">Submit</button>
         </form>
@@ -29,14 +44,18 @@ app.get("/form", (req, res) => {
 
 app.post("/submit", (req, res) => {
   console.log(req.body);
-  const test = req.body.test;
-  const name = req.body.name;
-  const message = req.body.message;
-  let output = "";
-  if (test === "true") {
-    output = "This message is a test. ";
+  res.set({ "Content-Type": "text/html" });
+  const username = escapeHTML(req.body.username);
+  const email = escapeHTML(req.body.email);
+  const comments = escapeHTML(req.body.comments);
+  const signUp = typeof req.body.signUp !== "undefined";
+  let output =
+    `<p>User ${username} has been created with email ${email}<br>` +
+    `User had the following comments:${comments}</p>`;
+  if (signUp) {
+    output = output + `<p>User has signed up for the NewsLetter!</p>`;
   }
-  output = output + `Message from ${name} is ${message}.`;
+  output = output + `<a href="/form">Go Back to Form</a>`;
   res.send(output);
 });
 
