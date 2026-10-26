@@ -1,2 +1,5 @@
 node_modules/
 .vscode/
+hw3/typescript/node_modules
+hw3/react/node_modules
+hw3/exercise/node_modules
