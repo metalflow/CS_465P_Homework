@@ -58,13 +58,17 @@ export function logPerson(person: Person) {
     );
 }
 
-export function filterPersons(persons: Person[], personType: string, criteria: Partial<User|Admin>): Partial<User|Admin>[] {
+export function filterPersons<T extends 'user' | 'admin'>(
+    persons: Person[],
+    personType: T,
+    criteria: Partial<Omit<Extract<Person, { type: T }>, 'type'>>
+): Extract<Person, { type: T }>[] {
     return persons
-        .filter((person) => person.type === personType)
+        .filter((person): person is Extract<Person, { type: T }> => person.type === personType)
         .filter((person) => {
-            let criteriaKeys = Object.keys(criteria) as (keyof Person)[];
+            const criteriaKeys = Object.keys(criteria) as (keyof typeof criteria)[];
             return criteriaKeys.every((fieldName) => {
-                return person[fieldName] === criteria[fieldName];
+                return person[fieldName as keyof typeof person] === criteria[fieldName];
             });
         });
 }
