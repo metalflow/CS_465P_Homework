@@ -38,6 +38,38 @@ function Board({ xIsNext, squares, onPlay }) {
     status = "Next player: " + (xIsNext ? "X" : "O");
   }
 
+  const makeBoard = (rows = 3, cols = 3) => {
+    let element = [];
+    let curSquare = 0;
+    let curRow = 0;
+    let curCol = 0;
+    for (curRow = 0; curRow < rows; curRow++) {
+      //gotta make the interior element *first* because you can't make unbalanced JSX
+      let rowElement = [];
+      for (curCol = 0; curCol < cols; curCol++) {
+        curSquare = curCol + curRow * rows;
+        rowElement.push(
+          <Square
+            value={squares[{ curSquare }]}
+            onSquareClick={() => handleClick({ curSquare })}
+          />,
+        );
+      }
+      //now we push this onto element to make a row
+      element.push(<div className="board-row">{rowElement}</div>);
+    }
+    return element;
+  };
+
+  const boardElement = makeBoard();
+
+  //return (
+  //  <>
+  //    <div className="status">{status}</div>
+  //    {boardElement}
+  //  </>
+  //);
+
   return (
     <>
       <div className="status">{status}</div>
@@ -97,17 +129,17 @@ export default function Game() {
   }
 
   const moves = history.map((squares, move) => {
-    let description;
+    let element;
     if (move > 0) {
-      description = "Go to move #" + move;
+      element = (
+        <button onClick={() => jumpTo(move)}> Go to move # {move} </button>
+      );
     } else {
-      description = "Go to game start";
+      element = (
+        <button onClick={() => jumpTo(move)}> Go to game start </button>
+      );
     }
-    return (
-      <li key={move}>
-        <button onClick={() => jumpTo(move)}>{description}</button>
-      </li>
-    );
+    return <li key={move}>{element}</li>;
   });
 
   return (
@@ -116,7 +148,10 @@ export default function Game() {
         <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
       </div>
       <div className="game-info">
-        <ol>{moves}</ol>
+        <ol>
+          {moves}
+          <li key={currentMove}>you are at move #{currentMove + 1}</li>;
+        </ol>
       </div>
     </div>
   );
