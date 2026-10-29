@@ -9,19 +9,21 @@
 import { useCallback, useState } from "react";
 
 function Square({ value, isWinner, onSquareClick }) {
-  let textColor="black";
-  let backColor="white";
+  let textColor = "black";
+  let backColor = "white";
   if (isWinner) {
-     textColor = "white"
-     backColor = "black"
+    textColor = "white";
+    backColor = "black";
   }
   return (
-    <button className="square" 
-      onClick={onSquareClick} 
-      style={{ 
-        backgroundColor: `${backColor}`, 
-        color: `${textColor}`
-     }}>
+    <button
+      className="square"
+      onClick={onSquareClick}
+      style={{
+        backgroundColor: `${backColor}`,
+        color: `${textColor}`,
+      }}
+    >
       {value}
     </button>
   );
@@ -29,7 +31,7 @@ function Square({ value, isWinner, onSquareClick }) {
 
 function Board({ xIsNext, squares, onPlay }) {
   function handleClick(i) {
-    console.log(`square ${i} was clicked`)
+    console.log(`square ${i} was clicked`);
     if (squares[i] || calculateWinner(squares)) {
       return;
     }
@@ -42,9 +44,18 @@ function Board({ xIsNext, squares, onPlay }) {
     onPlay(nextSquares);
   }
 
-  const winner= calculateWinner(squares);
+  let winner = null;
+  let winningSquares = null;
+  const winTuple = calculateWinner(squares);
+  if (winTuple !== null) {
+    winner = winTuple.player;
+    winningSquares = winTuple.squares;
+  }
+
   let status;
-  if (winner) {
+  if (winner === "draw") {
+    status = "draw";
+  } else if (winner) {
     status = "Winner: " + winner;
   } else {
     status = "Next player: " + (xIsNext ? "X" : "O");
@@ -56,24 +67,27 @@ function Board({ xIsNext, squares, onPlay }) {
 
   for (let curRow = 0; curRow < rows; curRow++) {
     const rowSquares = [];
-    
+
     for (let curCol = 0; curCol < cols; curCol++) {
-      const squareIndex = curRow * rows + curCol; 
-      
+      const squareIndex = curRow * rows + curCol;
+      let highlight = false;
+      if (winningSquares !== null) {
+        highlight = winningSquares.includes(squareIndex);
+      }
       rowSquares.push(
         <Square
-          key={'square'+squareIndex}
+          key={"square" + squareIndex}
           value={squares[squareIndex]}
-          isWinner={false}
+          isWinner={highlight}
           onSquareClick={() => handleClick(squareIndex)}
-        />
+        />,
       );
     }
 
     BoardElement.push(
-      <div key={'row'+curRow} className="board-row">
+      <div key={"row" + curRow} className="board-row">
         {rowSquares}
-      </div>
+      </div>,
     );
   }
 
@@ -99,8 +113,11 @@ function calculateWinner(squares) {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+      return { player: squares[a], squares: lines[i] };
     }
+  }
+  if (!squares.includes(null)) {
+    return { player: "draw", squares: [] };
   }
   return null;
 }
@@ -112,7 +129,7 @@ export default function Game() {
   const currentSquares = history[currentMove];
   const [isReversed, setReverse] = useState(true);
 
-  function handlePlay(nextSquares) {
+  function handlePlay(nextSquares, clickedIndex) {
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
     setHistory(nextHistory);
     setCurrentMove(nextHistory.length - 1);
@@ -126,7 +143,7 @@ export default function Game() {
     let element;
     if (move > 0) {
       element = (
-        <button onClick={() => jumpTo(move)}> Go to move # {move} </button>
+        <button onClick={() => jumpTo(move)}> Go to move # {move}</button>
       );
     } else {
       element = (
@@ -136,16 +153,16 @@ export default function Game() {
     return <li key={move}>{element}</li>;
   });
 
-  const reverseFlag=false;
+  const reverseFlag = false;
 
   function onReverseClick(reverseFlag) {
-    console.log("reverseFlag is "+reverseFlag)
+    console.log("reverseFlag is " + reverseFlag);
     return !reverseFlag;
   }
 
-  if (isReversed) { 
-    moves = [...moves].reverse() 
-  } 
+  if (isReversed) {
+    moves = [...moves].reverse();
+  }
 
   return (
     <div className="game">
@@ -154,8 +171,13 @@ export default function Game() {
       </div>
       <div className="game-info">
         <div key="CurrentMove">you are at move #{currentMove + 1}</div>
-        <button className="reverseButton" onClick={() => setReverse(!isReversed)}>Reverse Move List?</button>
-        <ol reversed={reverseFlag} start='0' >
+        <button
+          className="reverseButton"
+          onClick={() => setReverse(!isReversed)}
+        >
+          Reverse Move List?
+        </button>
+        <ol reversed={reverseFlag} start="0">
           {moves}
         </ol>
       </div>
