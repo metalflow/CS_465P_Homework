@@ -31,15 +31,15 @@
 const apiKey = process.env.COUNTRIES_API_KEY;
 const baseUrl = "https://api.restcountries.com/countries/v5";
 
-// 2. Create a URL object
-const url = new URL(baseUrl);
 export function getCountriesAndCapitals() {
     if (apiKey === null || apiKey === "") {
         return "Error: please configure .env file with your own API key"
     }
     const params = {
-  q : "Canada"
+  q : "Canada",
+  response_fields:"names"
 };
+const url = new URL(baseUrl);
 Object.keys(params).forEach(key => {
   if (Array.isArray(params[key])) {
     // If it's an array, append multiple values for the same key
@@ -48,12 +48,24 @@ Object.keys(params).forEach(key => {
     url.searchParams.append(key, params[key]);
   }
 });
-    return makeAPICall(url);
+    try {
+        return makeAPICall(url);
+    } catch (error) {
+        console.log(error);
+    }
+    return null;
 }
 function makeAPICall(url){
-fetch(url,
-  { method: "GET",headers: { 'Authorization': apiKey } }
+fetch( 'https://api.restcountries.com/countries/v5?q=canada',
+  { method: "GET",headers: { 'Authorization': 'rc_live_e6f736c229ae411daf3ebc0189360a10','Content-Type': 'application/json' } }
 )
-  .then(function (response) { return response.json(); })
+  .then(function (response) { 
+    if (response.status === 401) {
+    throw new Error("Authentication failed: Invalid or expired token.");
+  }
+  if (response.status === 403) {
+    throw new Error("Forbidden.  API key not allowed to access this resource.");
+  }
+    return response.json(); })
   .then(function (data) { console.log(data); });
 }
