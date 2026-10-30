@@ -142,8 +142,28 @@ export default function Game() {
   let moves = history.map((squares, move) => {
     let element;
     if (move > 0) {
+      //compute difference in history
+      console.log(
+        "squares is array?" +
+          Array.isArray(history) +
+          ",squares=" +
+          history[move] +
+          ",move=" +
+          move,
+      );
+      let i;
+      for (i = 0; i < history[move].length; i++) {
+        if (history[move][i] !== history[move - 1][i]) {
+          break;
+        }
+      }
+      const row = Math.floor(i / 3) + 1;
+      const col = (i % 3) + 1;
       element = (
-        <button onClick={() => jumpTo(move)}> Go to move # {move}</button>
+        <button onClick={() => jumpTo(move)}>
+          {" "}
+          Go to move # {move} ({row},{col})
+        </button>
       );
     } else {
       element = (
