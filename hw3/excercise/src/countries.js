@@ -1,12 +1,7 @@
-import {getCountriesAndCapitals} from './countries_api.js';
+import { action } from "./api/countries_api.ts";
 
 export default function Countries() {
-    try {
-        const data = getCountriesAndCapitals();
-    } catch (error) {
-        console.log(error);
-        return <h1>An error ocurred getting data</h1>;
-    }
-    console.log(data);
-    return <h1>Countries</h1>;
+  //const data = getCountriesAndCapitals();
+  console.log(data);
+  return <h1>Countries</h1>;
 }

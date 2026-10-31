@@ -28,44 +28,22 @@
 // number_format, parent, postal_code) plus subfields under names, codes, flag, memberships
 */
 
-const apiKey = process.env.COUNTRIES_API_KEY;
-const baseUrl = "https://api.restcountries.com/countries/v5";
+//import { json } from "react-router"; //not needed anymore?
+import type { LoaderFunctionArgs, ActionFunctionArgs } from "react-router";
+import { data } from "react-router";
 
-export function getCountriesAndCapitals() {
-    if (apiKey === null || apiKey === "") {
-        return "Error: please configure .env file with your own API key"
-    }
-    const params = {
-  q : "Canada",
-  response_fields:"names"
-};
-const url = new URL(baseUrl);
-Object.keys(params).forEach(key => {
-  if (Array.isArray(params[key])) {
-    // If it's an array, append multiple values for the same key
-    params[key].forEach(value => url.searchParams.append(key, value));
-  } else {
-    url.searchParams.append(key, params[key]);
-  }
-});
-    try {
-        return makeAPICall(url);
-    } catch (error) {
-        console.log(error);
-    }
-    return null;
+// GET request to /api/countries_api
+export async function loader({ request }: LoaderFunctionArgs) {
+  const data = { message: "Hello from the React Router API!" };
+
+  return { data };
 }
-function makeAPICall(url){
-fetch( 'https://api.restcountries.com/countries/v5?q=canada',
-  { method: "GET",headers: { 'Authorization': 'rc_live_e6f736c229ae411daf3ebc0189360a10','Content-Type': 'application/json' } }
-)
-  .then(function (response) { 
-    if (response.status === 401) {
-    throw new Error("Authentication failed: Invalid or expired token.");
-  }
-  if (response.status === 403) {
-    throw new Error("Forbidden.  API key not allowed to access this resource.");
-  }
-    return response.json(); })
-  .then(function (data) { console.log(data); });
+
+// POST request to /api/countries_api
+export async function action({ request }: ActionFunctionArgs) {
+  const body = await request.json();
+
+  // Perform your database write or backend processing here
+
+  return data({ success: true, received: body }, { status: 201 });
 }
