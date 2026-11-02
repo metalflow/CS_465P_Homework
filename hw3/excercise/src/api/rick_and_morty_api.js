@@ -8,27 +8,34 @@ https://rickandmortyapi.com/api
 */
 
 
-const baseURL = 'https://rickandmortyapi.com/api';
+const baseURL = 'https://rickandmortyapi.com';
 
 
-export async function getCharacters() {
+export async function getCharacters(number) {
+  let url=new URL(baseURL);
+  if (typeof number === 'number' && !Number.isNaN(number)) {
     const numbers = [];
-for (let i = 1; i <= 100; i++) {
+for (let i = 1; i <= number; i++) {
   numbers.push(i);
 }
-    const url = new URL(baseURL+'/character/'+numbers);
+    url.pathname = 'api/character/'+numbers;
+} else {
+  url.pathname='/api/character';
+}
     return await makeAPIcall(url);
 }
 
-export function getLocations() {
-    return null;
+export async function getLocations() {
+  let url=new URL(baseURL);
+  const numbers = [];
+for (let i = 1; i <= 126; i++) {
+  numbers.push(i);
+}
+  url.pathname='/api/location/'+numbers;
+    return await makeAPIcall(url);
 }
 
-export function getSpecies() {
-    return null;
-}
-
-async function makeAPIcall(url,) {
+async function makeAPIcall(url) {
 
   try {
     const response = await fetch(url);
