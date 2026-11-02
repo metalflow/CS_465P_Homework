@@ -6,9 +6,9 @@ import {
   Outlet 
 } from 'react-router-dom';
 import Home from './home';
-import Countries from './countries';
-import Populous from './populous';
-import Regions from './regions';
+import Characters from './characters';
+import Species from './species';
+import Locations from './locations';
 
 // 1. Shared Layout Component with a Navigation Bar
 function Layout() {
@@ -16,9 +16,9 @@ function Layout() {
     <div style={{ fontFamily: 'Arial, sans-serif', padding: '20px' }}>
       <nav style={{ display: 'flex', gap: '15px', marginBottom: '20px', borderBottom: '1px solid #ccc', paddingBottom: '10px' }}>
         <Link to="/">Home</Link>
-        <Link to="/Countries">Countries</Link>
-        <Link to="/Populous">Populous</Link>
-        <Link to="/Regions">Regions</Link>
+        <Link to="/characters">Characters</Link>
+        <Link to="/species">Species</Link>
+        <Link to="/locations">Locations</Link>
       </nav>
       <main>
         {/* The Outlet component dynamically renders the active child route */}
@@ -51,16 +51,16 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "countries",
-        element: <Countries />,
+        path: "characters",
+        element: <Characters />,
       },
       {
-        path: "populous",
-        element: <Populous />,
+        path: "species",
+        element: <Species />,
       },
       {
-        path: "regions",
-        element: <Regions />,
+        path: "locations",
+        element: <Locations />,
       },
     ],
   },
