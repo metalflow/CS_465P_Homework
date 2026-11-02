@@ -1,20 +1,28 @@
-import React from 'react';
-import { 
-  createBrowserRouter, 
-  RouterProvider, 
-  Link, 
-  Outlet 
-} from 'react-router-dom';
-import Home from './home';
-import Characters from './characters';
-import Species from './species';
-import Locations from './locations';
+import React from "react";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Link,
+  Outlet,
+} from "react-router-dom";
+import Home from "./home";
+import Characters from "./characters";
+import Species from "./species";
+import Locations from "./locations";
 
 // 1. Shared Layout Component with a Navigation Bar
 function Layout() {
   return (
-    <div style={{ fontFamily: 'Arial, sans-serif', padding: '20px' }}>
-      <nav style={{ display: 'flex', gap: '15px', marginBottom: '20px', borderBottom: '1px solid #ccc', paddingBottom: '10px' }}>
+    <div style={{ fontFamily: "Arial, sans-serif", padding: "20px" }}>
+      <nav
+        style={{
+          display: "flex",
+          gap: "15px",
+          marginBottom: "20px",
+          borderBottom: "1px solid #ccc",
+          paddingBottom: "10px",
+        }}
+      >
         <Link to="/">Home</Link>
         <Link to="/characters">Characters</Link>
         <Link to="/species">Species</Link>
@@ -32,7 +40,7 @@ function Layout() {
 
 function NotFound() {
   return (
-    <div style={{ textAlign: 'center', marginTop: '50px' }}>
+    <div style={{ textAlign: "center", marginTop: "50px" }}>
       <h1>🚫 404 - Page Not Found</h1>
       <p>Sorry, the page you are looking for does not exist.</p>
       <Link to="/">Return to Home</Link>
