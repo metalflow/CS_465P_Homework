@@ -139,39 +139,41 @@ export default function Game() {
     setCurrentMove(nextMove);
   }
 
-  let moves = history.map((squares, move) => {
-    let element;
-    if (move > 0) {
-      //compute difference in history
-      console.log(
-        "squares is array?" +
-          Array.isArray(history) +
-          ",squares=" +
-          history[move] +
-          ",move=" +
-          move,
-      );
-      let i;
-      for (i = 0; i < history[move].length; i++) {
-        if (history[move][i] !== history[move - 1][i]) {
-          break;
+  let moves = history
+    .map((squares, move) => {
+      let element;
+      if (move > 0) {
+        //compute difference in history
+        console.log(
+          "squares is array?" +
+            Array.isArray(history) +
+            ",squares=" +
+            history[move] +
+            ",move=" +
+            move,
+        );
+        let i;
+        for (i = 0; i < history[move].length; i++) {
+          if (history[move][i] !== history[move - 1][i]) {
+            break;
+          }
         }
+        const row = Math.floor(i / 3) + 1;
+        const col = (i % 3) + 1;
+        element = (
+          <button onClick={() => jumpTo(move)}>
+            {" "}
+            Go to move # {move} ({row},{col})
+          </button>
+        );
+      } else {
+        element = (
+          <button onClick={() => jumpTo(move)}> Go to game start </button>
+        );
       }
-      const row = Math.floor(i / 3) + 1;
-      const col = (i % 3) + 1;
-      element = (
-        <button onClick={() => jumpTo(move)}>
-          {" "}
-          Go to move # {move} ({row},{col})
-        </button>
-      );
-    } else {
-      element = (
-        <button onClick={() => jumpTo(move)}> Go to game start </button>
-      );
-    }
-    return <li key={move}>{element}</li>;
-  });
+      return <li key={move}>{element}</li>;
+    })
+    .concat(<li key="CurrentMove">you are at move #{history.length} </li>);
 
   const reverseFlag = false;
 
@@ -190,14 +192,21 @@ export default function Game() {
         <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
       </div>
       <div className="game-info">
-        <div key="CurrentMove">you are at move #{currentMove + 1}</div>
+        <div key=""></div>
         <button
           className="reverseButton"
           onClick={() => setReverse(!isReversed)}
         >
           Reverse Move List?
         </button>
-        <ol reversed={reverseFlag} start="0">
+        <ol
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            padding: 0,
+            listStyle: "none",
+          }}
+        >
           {moves}
         </ol>
       </div>
